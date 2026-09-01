@@ -1,0 +1,22 @@
+#!/bin/sh
+# 提交信息规范强制（见 AGENTS.md「Git 纪律」与 docs/workflow.md §6）
+# 规则1（拦截）：首行必须以 [claude] / [codex] / [human] 开头
+# 规则2（警告）：正文应引用任务号 T-NNN；任务体系跑顺后升级为拦截
+
+msg_file="$1"
+first_line=$(head -n1 "$msg_file")
+
+case "$first_line" in
+  "[claude]"*|"[codex]"*|"[human]"*) ;;
+  *)
+    echo "✗ commit-msg 钩子拦截：首行必须以 [claude] / [codex] / [human] 开头" >&2
+    echo "  当前首行：$first_line" >&2
+    exit 1
+    ;;
+esac
+
+if ! grep -qE 'T-[0-9]+' "$msg_file"; then
+  echo "⚠ 提示：commit message 未引用任务号（T-NNN）。trivial 改动可忽略本提示。" >&2
+fi
+
+exit 0

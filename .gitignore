@@ -1,0 +1,13 @@
+# 临时通用忽略规则；技术栈确定后完善
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+node_modules/
+__pycache__/
